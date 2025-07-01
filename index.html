@@ -3,804 +3,522 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Recipe & Ingredient Checker</title>
+    <title>SWIFTGRILL - Cook Smart, Cook Fast</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            overflow-x: hidden;
         }
-
+        
         .container {
-            max-width: 1200px;
+            max-width: 400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+            padding: 20px;
+            position: relative;
+            z-index: 10;
         }
-
+        
         .header {
             text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            color: #333;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .upload-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 30px;
             margin-bottom: 30px;
-            text-align: center;
-            border: 3px dashed #667eea;
-            transition: all 0.3s ease;
+            animation: fadeInDown 1s ease-out;
         }
-
-        .upload-section:hover {
-            border-color: #764ba2;
-            background: #f0f2f5;
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
         }
-
-        .upload-buttons {
+        
+        .tagline {
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        
+        .language-selector {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease-out 0.2s both;
         }
-
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
+        
+        .lang-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
             cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .lang-btn:hover, .lang-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-2px);
+        }
+        
+        .frying-pan {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .pan-body {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .pan-handle {
+            width: 60px;
+            height: 20px;
+            background: linear-gradient(145deg, #8b4513, #a0522d);
+            position: absolute;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px;
+        }
+        
+        .food-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            animation: sizzle 2s infinite;
+        }
+        
+        .particle-1 { top: 30%; left: 40%; animation-delay: 0s; }
+        .particle-2 { top: 50%; left: 60%; animation-delay: 0.5s; background: #ffa726; }
+        .particle-3 { top: 60%; left: 30%; animation-delay: 1s; background: #4caf50; }
+        
+        .main-feature {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px 25px;
+            margin: 30px 0;
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+        
+        .feature-title {
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .ingredient-input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            margin-bottom: 15px;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .suggest-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            border-radius: 15px;
             font-size: 1rem;
             font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-            transform: translateY(-2px);
-        }
-
-        .image-preview {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .image-preview img {
-            max-width: 300px;
-            max-height: 300px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .suggestions-section {
-            margin-bottom: 30px;
-        }
-
-        .suggestions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .food-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
             cursor: pointer;
-        }
-
-        .food-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .food-card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .food-card h3 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .food-card p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .recipe-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-
-        .recipe-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .recipe-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .recipe-image {
-            width: 200px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 15px;
-        }
-
-        .recipe-info h2 {
-            color: #333;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .recipe-info p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .ingredients-section {
-            margin-bottom: 30px;
-        }
-
-        .ingredients-section h3 {
-            color: #333;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .ingredients-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-        }
-
-        .ingredient-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 8px;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-
-        .ingredient-item:hover {
-            background: #e9ecef;
+        
+        .suggest-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255,107,107,0.4);
         }
-
-        .ingredient-checkbox {
-            width: 18px;
-            height: 18px;
-            accent-color: #667eea;
-        }
-
-        .ingredient-text {
-            flex: 1;
-            color: #333;
-            font-size: 1rem;
-        }
-
-        .ingredient-item.checked {
-            background: #d4edda;
-            border-left: 4px solid #28a745;
-        }
-
-        .steps-section h3 {
-            color: #333;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .steps-list {
-            list-style: none;
-        }
-
-        .step-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-
-        .step-number {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .video-section {
+        
+        .recipe-suggestions {
             margin-top: 30px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
+            animation: fadeInUp 1s ease-out 0.6s both;
         }
-
-        .video-section h3 {
-            color: #333;
-            font-size: 1.5rem;
+        
+        .section-title {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-align: center;
         }
-
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .video-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        
+        .recipe-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
             transition: all 0.3s ease;
         }
-
-        .video-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.2);
         }
-
-        .video-thumbnail {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .video-info {
-            padding: 15px;
-        }
-
-        .video-title {
-            color: #333;
+        
+        .recipe-name {
+            color: #fff;
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 8px;
-            line-height: 1.3;
         }
-
-        .video-channel {
-            color: #666;
+        
+        .recipe-desc {
+            color: rgba(255,255,255,0.8);
             font-size: 0.9rem;
+            line-height: 1.5;
         }
-
-        .section-title {
-            color: #333;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            text-align: center;
-            position: relative;
+        
+        .recipe-time {
+            color: #ffa726;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 8px;
         }
-
-        .section-title::after {
-            content: '';
+        
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .floating-icon {
             position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 2px;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: floatRandom 15s infinite linear;
         }
-
-        .hidden {
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes sizzle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 0.7; }
+        }
+        
+        @keyframes floatRandom {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+        
+        .result-container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
             display: none;
         }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
+        
+        .recipe-result {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin-bottom: 10px;
         }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+        
+        .recipe-emoji {
+            font-size: 2rem;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        
+        .recipe-info h3 {
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 5px;
         }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .upload-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .recipe-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .ingredients-list {
-                grid-template-columns: 1fr;
-            }
+        
+        .recipe-info p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
+    <div class="floating-elements">
+        <div class="floating-icon" style="left: 10%; animation-delay: 0s;">🍳</div>
+        <div class="floating-icon" style="left: 80%; animation-delay: 3s;">🥘</div>
+        <div class="floating-icon" style="left: 60%; animation-delay: 6s;">🍲</div>
+        <div class="floating-icon" style="left: 30%; animation-delay: 9s;">🔥</div>
+        <div class="floating-icon" style="left: 70%; animation-delay: 12s;">⚡</div>
+    </div>
+
     <div class="container">
         <div class="header">
-            <h1>🍳 Food Recipe Finder</h1>
-            <p>Upload or capture a photo of any dish to get instant recipes, ingredients, and cooking videos!</p>
+            <h1 class="logo">SWIFTGRILL</h1>
+            <p class="tagline" id="tagline">Cook Smart, Cook Fast ⚡</p>
         </div>
 
-        <div class="upload-section">
-            <h3>📸 Capture or Upload Your Dish</h3>
-            <div class="upload-buttons">
-                <button class="btn btn-primary" onclick="capturePhoto()">
-                    📷 Take Photo
-                </button>
-                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
-                    📁 Upload Image
-                </button>
-                <button class="btn btn-secondary" onclick="showSuggestions()">
-                    💡 Browse Suggestions
-                </button>
-            </div>
-            <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileUpload(event)">
-            <input type="file" id="cameraInput" accept="image/*" capture="camera" style="display: none;" onchange="handleFileUpload(event)">
-            <div class="image-preview" id="imagePreview"></div>
+        <div class="language-selector">
+            <button class="lang-btn active" onclick="changeLanguage('en')">EN</button>
+            <button class="lang-btn" onclick="changeLanguage('es')">ES</button>
+            <button class="lang-btn" onclick="changeLanguage('fr')">FR</button>
+            <button class="lang-btn" onclick="changeLanguage('hi')">हिं</button>
         </div>
 
-        <div class="suggestions-section" id="suggestionsSection">
-            <h2 class="section-title">🌟 Popular Dishes</h2>
-            <div class="suggestions-grid" id="suggestionsGrid">
-                <!-- Suggestions will be populated here -->
+        <div class="frying-pan">
+            <div class="pan-body">
+                <div class="pan-handle"></div>
+                <div class="food-particle particle-1"></div>
+                <div class="food-particle particle-2"></div>
+                <div class="food-particle particle-3"></div>
             </div>
         </div>
 
-        <div class="recipe-section" id="recipeSection">
-            <div class="recipe-header">
-                <img src="" alt="Recipe Image" class="recipe-image" id="recipeImage">
-                <div class="recipe-info">
-                    <h2 id="recipeName">Recipe Name</h2>
-                    <p id="recipeDescription">Recipe description will appear here...</p>
-                </div>
-            </div>
-
-            <div class="ingredients-section">
-                <h3>🥘 Ingredients Checklist</h3>
-                <p style="color: #666; margin-bottom: 20px;">Check off the ingredients you already have:</p>
-                <div class="ingredients-list" id="ingredientsList">
-                    <!-- Ingredients will be populated here -->
-                </div>
-            </div>
-
-            <div class="steps-section">
-                <h3>👨‍🍳 Cooking Instructions</h3>
-                <ul class="steps-list" id="stepsList">
-                    <!-- Steps will be populated here -->
-                </ul>
-            </div>
-
-            <div class="video-section">
-                <h3>🎥 YouTube Video Tutorials</h3>
-                <div class="video-grid" id="videoGrid">
-                    <!-- Videos will be populated here -->
-                </div>
-            </div>
+        <div class="main-feature">
+            <h2 class="feature-title" id="feature-title">🥘 What Can You Cook?</h2>
+            <input type="text" class="ingredient-input" id="ingredients" placeholder="Enter ingredients (e.g., chicken, rice, onions)">
+            <button class="suggest-btn" id="suggest-btn" onclick="suggestRecipes()">Find Recipes</button>
+            <div class="result-container" id="results"></div>
         </div>
 
-        <div class="loading hidden" id="loadingSection">
-            <div class="spinner"></div>
-            <p>Analyzing your dish and finding the perfect recipe...</p>
+        <div class="recipe-suggestions">
+            <h2 class="section-title" id="trending-title">🔥 Trending Recipes</h2>
+            <div class="recipe-card">
+                <div class="recipe-name" id="recipe1-name">Spicy Grilled Chicken</div>
+                <div class="recipe-desc" id="recipe1-desc">Juicy chicken with perfect spice blend, grilled to perfection</div>
+                <div class="recipe-time">⏱️ 25 mins</div>
+            </div>
+            <div class="recipe-card">
+                <div class="recipe-name" id="recipe2-name">Lightning Pasta</div>
+                <div class="recipe-desc" id="recipe2-desc">Quick and delicious pasta with fresh herbs and garlic</div>
+                <div class="recipe-time">⏱️ 15 mins</div>
+            </div>
+            <div class="recipe-card">
+                <div class="recipe-name" id="recipe3-name">Swift Stir Fry</div>
+                <div class="recipe-desc" id="recipe3-desc">Colorful vegetables with protein, wok-tossed to perfection</div>
+                <div class="recipe-time">⏱️ 12 mins</div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Sample data for demonstration
-        const sampleDishes = [
-            {
-                name: "Spaghetti Carbonara",
-                image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=300&h=200&fit=crop",
-                description: "Classic Italian pasta with eggs, cheese, and pancetta"
+        const translations = {
+            en: {
+                tagline: "Cook Smart, Cook Fast ⚡",
+                featureTitle: "🥘 What Can You Cook?",
+                placeholder: "Enter ingredients (e.g., chicken, rice, onions)",
+                suggestBtn: "Find Recipes",
+                trendingTitle: "🔥 Trending Recipes",
+                recipe1Name: "Spicy Grilled Chicken",
+                recipe1Desc: "Juicy chicken with perfect spice blend, grilled to perfection",
+                recipe2Name: "Lightning Pasta",
+                recipe2Desc: "Quick and delicious pasta with fresh herbs and garlic",
+                recipe3Name: "Swift Stir Fry",
+                recipe3Desc: "Colorful vegetables with protein, wok-tossed to perfection"
             },
-            {
-                name: "Chicken Tikka Masala",
-                image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&h=200&fit=crop",
-                description: "Creamy and flavorful Indian curry dish"
+            es: {
+                tagline: "Cocina Inteligente, Cocina Rápido ⚡",
+                featureTitle: "🥘 ¿Qué Puedes Cocinar?",
+                placeholder: "Ingresa ingredientes (ej: pollo, arroz, cebollas)",
+                suggestBtn: "Buscar Recetas",
+                trendingTitle: "🔥 Recetas Populares",
+                recipe1Name: "Pollo Picante a la Parrilla",
+                recipe1Desc: "Pollo jugoso con mezcla perfecta de especias, asado a la perfección",
+                recipe2Name: "Pasta Relámpago",
+                recipe2Desc: "Pasta rápida y deliciosa con hierbas frescas y ajo",
+                recipe3Name: "Salteado Rápido",
+                recipe3Desc: "Verduras coloridas con proteína, salteadas a la perfección"
             },
-            {
-                name: "Beef Tacos",
-                image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=300&h=200&fit=crop",
-                description: "Mexican-style tacos with seasoned beef"
+            fr: {
+                tagline: "Cuisinez Intelligent, Cuisinez Vite ⚡",
+                featureTitle: "🥘 Que Pouvez-Vous Cuisiner?",
+                placeholder: "Entrez les ingrédients (ex: poulet, riz, oignons)",
+                suggestBtn: "Trouver Recettes",
+                trendingTitle: "🔥 Recettes Tendance",
+                recipe1Name: "Poulet Grillé Épicé",
+                recipe1Desc: "Poulet juteux avec un mélange d'épices parfait, grillé à la perfection",
+                recipe2Name: "Pâtes Éclair",
+                recipe2Desc: "Pâtes rapides et délicieuses aux herbes fraîches et à l'ail",
+                recipe3Name: "Sauté Rapide",
+                recipe3Desc: "Légumes colorés avec protéines, sautés à la perfection"
             },
-            {
-                name: "Caesar Salad",
-                image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=300&h=200&fit=crop",
-                description: "Fresh romaine lettuce with Caesar dressing"
-            },
-            {
-                name: "Margherita Pizza",
-                image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=300&h=200&fit=crop",
-                description: "Classic Italian pizza with tomato, mozzarella, and basil"
-            },
-            {
-                name: "Chocolate Chip Cookies",
-                image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=300&h=200&fit=crop",
-                description: "Homemade cookies with chocolate chips"
-            }
-        ];
-
-        const sampleRecipes = {
-            "Spaghetti Carbonara": {
-                image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop",
-                description: "A classic Roman pasta dish made with eggs, cheese, pancetta, and black pepper. Simple yet delicious!",
-                ingredients: [
-                    "400g spaghetti",
-                    "200g pancetta or guanciale, diced",
-                    "4 large eggs",
-                    "100g Pecorino Romano cheese, grated",
-                    "50g Parmesan cheese, grated",
-                    "Black pepper, freshly ground",
-                    "Salt for pasta water"
-                ],
-                steps: [
-                    "Bring a large pot of salted water to boil and cook spaghetti according to package directions.",
-                    "While pasta cooks, heat a large skillet over medium heat and cook pancetta until crispy.",
-                    "In a bowl, whisk together eggs, grated cheeses, and plenty of black pepper.",
-                    "Reserve 1 cup pasta water before draining the spaghetti.",
-                    "Add hot pasta to the skillet with pancetta and toss.",
-                    "Remove from heat and quickly mix in the egg mixture, adding pasta water as needed.",
-                    "Serve immediately with extra cheese and black pepper."
-                ],
-                videos: [
-                    {
-                        title: "Authentic Carbonara Recipe | Italian Grandma Style",
-                        channel: "Italia Squisita",
-                        thumbnail: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=300&h=200&fit=crop",
-                        url: "https://youtube.com/watch?v=example1"
-                    },
-                    {
-                        title: "Perfect Carbonara Every Time - Chef's Tips",
-                        channel: "Gordon Ramsay",
-                        thumbnail: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=300&h=200&fit=crop",
-                        url: "https://youtube.com/watch?v=example2"
-                    }
-                ]
-            },
-            "Chicken Tikka Masala": {
-                image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop",
-                description: "Tender chicken pieces in a creamy, spiced tomato-based sauce. Perfect with rice or naan bread.",
-                ingredients: [
-                    "1 kg chicken breast, cut into pieces",
-                    "1 cup plain yogurt",
-                    "2 tbsp tikka masala paste",
-                    "400ml coconut milk",
-                    "400g canned tomatoes",
-                    "1 large onion, diced",
-                    "4 cloves garlic, minced",
-                    "1 inch ginger, grated",
-                    "2 tsp garam masala",
-                    "1 tsp cumin powder",
-                    "1 tsp coriander powder",
-                    "Salt and pepper to taste",
-                    "Fresh cilantro for garnish"
-                ],
-                steps: [
-                    "Marinate chicken pieces in yogurt and tikka masala paste for at least 30 minutes.",
-                    "Heat oil in a large pan and cook marinated chicken until golden brown. Set aside.",
-                    "In the same pan, sauté onions until golden, then add garlic and ginger.",
-                    "Add spices and cook for 1 minute until fragrant.",
-                    "Add canned tomatoes and simmer for 10 minutes until sauce thickens.",
-                    "Stir in coconut milk and return chicken to the pan.",
-                    "Simmer for 15-20 minutes until chicken is cooked through.",
-                    "Garnish with fresh cilantro and serve with rice or naan."
-                ],
-                videos: [
-                    {
-                        title: "Restaurant Style Chicken Tikka Masala",
-                        channel: "Bon Appétit",
-                        thumbnail: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&h=200&fit=crop",
-                        url: "https://youtube.com/watch?v=example3"
-                    },
-                    {
-                        title: "Easy Chicken Tikka Masala Recipe",
-                        channel: "Indian Food Made Easy",
-                        thumbnail: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&h=200&fit=crop",
-                        url: "https://youtube.com/watch?v=example4"
-                    }
-                ]
+            hi: {
+                tagline: "स्मार्ट बनाएं, तेज़ बनाएं ⚡",
+                featureTitle: "🥘 आप क्या बना सकते हैं?",
+                placeholder: "सामग्री डालें (जैसे: चिकन, चावल, प्याज़)",
+                suggestBtn: "रेसिपी खोजें",
+                trendingTitle: "🔥 ट्रेंडिंग रेसिपी",
+                recipe1Name: "स्पाइसी ग्रिल्ड चिकन",
+                recipe1Desc: "परफेक्ट मसाला मिश्रण के साथ रसीला चिकन, बेहतरीन ग्रिल्ड",
+                recipe2Name: "लाइटनिंग पास्ता",
+                recipe2Desc: "ताज़े हर्ब्स और लहसुन के साथ तुरंत और स्वादिष्ट पास्ता",
+                recipe3Name: "स्विफ्ट स्टिर फ्राई",
+                recipe3Desc: "प्रोटीन के साथ रंगबिरंगी सब्जियां, परफेक्ट तड़के के साथ"
             }
         };
 
-        function capturePhoto() {
-            document.getElementById('cameraInput').click();
-        }
+        let currentLang = 'en';
 
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imagePreview = document.getElementById('imagePreview');
-                    imagePreview.innerHTML = `<img src="${e.target.result}" alt="Uploaded dish">`;
-                    
-                    // Simulate AI analysis
-                    setTimeout(() => {
-                        analyzeImage(file.name);
-                    }, 1000);
-                };
-                reader.readAsDataURL(file);
-                
-                showLoading();
-            }
-        }
-
-        function showLoading() {
-            document.getElementById('loadingSection').classList.remove('hidden');
-            document.getElementById('recipeSection').classList.remove('active');
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingSection').classList.add('hidden');
-        }
-
-        function analyzeImage(filename) {
-            // Simulate AI analysis delay
-            setTimeout(() => {
-                hideLoading();
-                // For demo, randomly select a recipe
-                const dishNames = Object.keys(sampleRecipes);
-                const randomDish = dishNames[Math.floor(Math.random() * dishNames.length)];
-                showRecipe(randomDish);
-            }, 2000);
-        }
-
-        function showSuggestions() {
-            const suggestionsGrid = document.getElementById('suggestionsGrid');
-            suggestionsGrid.innerHTML = '';
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
             
-            sampleDishes.forEach(dish => {
-                const dishCard = document.createElement('div');
-                dishCard.className = 'food-card';
-                dishCard.onclick = () => selectDish(dish.name);
-                
-                dishCard.innerHTML = `
-                    <img src="${dish.image}" alt="${dish.name}">
-                    <h3>${dish.name}</h3>
-                    <p>${dish.description}</p>
-                `;
-                
-                suggestionsGrid.appendChild(dishCard);
-            });
+            const t = translations[lang];
+            document.getElementById('tagline').textContent = t.tagline;
+            document.getElementById('feature-title').textContent = t.featureTitle;
+            document.getElementById('ingredients').placeholder = t.placeholder;
+            document.getElementById('suggest-btn').textContent = t.suggestBtn;
+            document.getElementById('trending-title').textContent = t.trendingTitle;
+            document.getElementById('recipe1-name').textContent = t.recipe1Name;
+            document.getElementById('recipe1-desc').textContent = t.recipe1Desc;
+            document.getElementById('recipe2-name').textContent = t.recipe2Name;
+            document.getElementById('recipe2-desc').textContent = t.recipe2Desc;
+            document.getElementById('recipe3-name').textContent = t.recipe3Name;
+            document.getElementById('recipe3-desc').textContent = t.recipe3Desc;
         }
 
-        function selectDish(dishName) {
-            showLoading();
-            setTimeout(() => {
-                hideLoading();
-                showRecipe(dishName);
-            }, 1500);
-        }
-
-        function showRecipe(dishName) {
-            const recipe = sampleRecipes[dishName];
-            if (!recipe) {
-                // Create a generic recipe for dishes not in our sample data
-                showGenericRecipe(dishName);
+        function suggestRecipes() {
+            const ingredients = document.getElementById('ingredients').value.toLowerCase();
+            const resultsContainer = document.getElementById('results');
+            
+            if (!ingredients.trim()) {
+                alert('Please enter some ingredients!');
                 return;
             }
 
-            document.getElementById('recipeName').textContent = dishName;
-            document.getElementById('recipeDescription').textContent = recipe.description;
-            document.getElementById('recipeImage').src = recipe.image;
+            const recipeDatabase = {
+                'chicken': [
+                    { name: 'Grilled Chicken', desc: 'Perfectly seasoned grilled chicken', emoji: '🍗' },
+                    { name: 'Chicken Stir Fry', desc: 'Quick chicken with vegetables', emoji: '🥘' }
+                ],
+                'rice': [
+                    { name: 'Fried Rice', desc: 'Classic fried rice with soy sauce', emoji: '🍚' },
+                    { name: 'Rice Bowl', desc: 'Healthy rice bowl with toppings', emoji: '🍲' }
+                ],
+                'pasta': [
+                    { name: 'Aglio e Olio', desc: 'Simple pasta with garlic and oil', emoji: '🍝' },
+                    { name: 'Carbonara', desc: 'Creamy pasta with eggs and cheese', emoji: '🍜' }
+                ],
+                'egg': [
+                    { name: 'Scrambled Eggs', desc: 'Fluffy scrambled eggs', emoji: '🍳' },
+                    { name: 'Omelette', desc: 'Perfect French omelette', emoji: '🥚' }
+                ],
+                'tomato': [
+                    { name: 'Tomato Salad', desc: 'Fresh tomato with herbs', emoji: '🍅' },
+                    { name: 'Tomato Sauce', desc: 'Rich homemade tomato sauce', emoji: '🍝' }
+                ]
+            };
 
-            // Populate ingredients
-            const ingredientsList = document.getElementById('ingredientsList');
-            ingredientsList.innerHTML = '';
-            recipe.ingredients.forEach((ingredient, index) => {
-                const ingredientItem = document.createElement('div');
-                ingredientItem.className = 'ingredient-item';
-                ingredientItem.innerHTML = `
-                    <input type="checkbox" class="ingredient-checkbox" id="ingredient-${index}" onchange="toggleIngredient(this)">
-                    <label for="ingredient-${index}" class="ingredient-text">${ingredient}</label>
-                `;
-                ingredientsList.appendChild(ingredientItem);
+            let matchedRecipes = [];
+            const ingredientList = ingredients.split(',').map(i => i.trim());
+            
+            ingredientList.forEach(ingredient => {
+                Object.keys(recipeDatabase).forEach(key => {
+                    if (ingredient.includes(key) || key.includes(ingredient)) {
+                        matchedRecipes = [...matchedRecipes, ...recipeDatabase[key]];
+                    }
+                });
             });
 
-            // Populate steps
-            const stepsList = document.getElementById('stepsList');
-            stepsList.innerHTML = '';
-            recipe.steps.forEach((step, index) => {
-                const stepItem = document.createElement('li');
-                stepItem.className = 'step-item';
-                stepItem.innerHTML = `
-                    <div class="step-number">${index + 1}</div>
-                    <div class="step-text">${step}</div>
-                `;
-                stepsList.appendChild(stepItem);
-            });
+            if (matchedRecipes.length === 0) {
+                matchedRecipes = [
+                    { name: 'Mixed Veggie Stir Fry', desc: 'Quick stir fry with your ingredients', emoji: '🥗' },
+                    { name: 'Simple Soup', desc: 'Warm soup with available ingredients', emoji: '🍲' }
+                ];
+            }
 
-            // Populate videos
-            const videoGrid = document.getElementById('videoGrid');
-            videoGrid.innerHTML = '';
-            recipe.videos.forEach(video => {
-                const videoCard = document.createElement('div');
-                videoCard.className = 'video-card';
-                videoCard.onclick = () => window.open(video.url, '_blank');
-                videoCard.innerHTML = `
-                    <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail">
-                    <div class="video-info">
-                        <div class="video-title">${video.title}</div>
-                        <div class="video-channel">${video.channel}</div>
+            // Remove duplicates
+            matchedRecipes = matchedRecipes.filter((recipe, index, self) => 
+                index === self.findIndex(r => r.name === recipe.name)
+            );
+
+            resultsContainer.innerHTML = '';
+            matchedRecipes.slice(0, 3).forEach(recipe => {
+                const recipeDiv = document.createElement('div');
+                recipeDiv.className = 'recipe-result';
+                recipeDiv.innerHTML = `
+                    <div class="recipe-emoji">${recipe.emoji}</div>
+                    <div class="recipe-info">
+                        <h3>${recipe.name}</h3>
+                        <p>${recipe.desc}</p>
                     </div>
                 `;
-                videoGrid.appendChild(videoCard);
+                resultsContainer.appendChild(recipeDiv);
             });
 
-            document.getElementById('recipeSection').classList.add('active');
+            resultsContainer.style.display = 'block';
+            resultsContainer.style.animation = 'fadeInUp 0.5s ease-out';
         }
 
-        function showGenericRecipe(dishName) {
-            document.getElementById('recipeName').textContent = dishName;
-            document.getElementById('recipeDescription').textContent = `Delicious ${dishName} recipe. This is a simulated recipe for demonstration purposes.`;
-            document.getElementById('recipeImage').src = "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop";
-
-            // Generic ingredients
-            const genericIngredients = [
-                "Main ingredient (as needed)",
-                "Seasonings and spices",
-                "Cooking oil or butter",
-                "Onions and garlic",
-                "Salt and pepper to taste"
-            ];
-
-            const ingredientsList = document.getElementById('ingredientsList');
-            ingredientsList.innerHTML = '';
-            genericIngredients.forEach((ingredient, index) => {
-                const ingredientItem = document.createElement('div');
-                ingredientItem.className = 'ingredient-item';
-                ingredientItem.innerHTML = `
-                    <input type="checkbox" class="ingredient-checkbox" id="ingredient-${index}" onchange="toggleIngredient(this)">
-                    <label for="ingredient-${index}" class="ingredient-text">${ingredient}</label>
-                `;
-                ingredientsList.appendChild(ingredientItem);
-            });
-
-            // Generic steps
-            const genericSteps = [
-                "Prepare all ingredients and equipment needed for cooking.",
-                "Heat your cooking surface and add oil or butter as needed.",
-                "Cook the main ingredients according to the recipe requirements.",
-                "Season with salt, pepper, and other spices to taste.",
-                "Cook until done and serve hot."
-            ];
-
-            const stepsList = document.getElementById('stepsList');
-            stepsList.innerHTML = '';
-            genericSteps.forEach((step, index) => {
-                const stepItem = document.createElement('li');
-                stepItem.className = 'step-item';
-                stepItem.innerHTML = `
-                    <div class="step-number">${index + 1}</div>
-                    <div class="step-text">${step}</div>
-                `;
-                stepsList.appendChild(stepItem);
-            });
-
-            // Generic videos
-            const videoGrid = document.getElementById('videoGrid');
-            videoGrid.innerHTML = '<p style="text-align: center; color: #666;">Video tutorials will be suggested based on the detected dish.</p>';
-
-            document.getElementById('recipeSection').classList.add('active');
-        }
-
-        function toggleIngredient(checkbox) {
-            const ingredientItem = checkbox.parentElement;
-            if (checkbox.checked) {
-                ingredientItem.classList.add('checked');
-            } else {
-                ingredientItem.classList.remove('checked');
-            }
-        }
-
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            showSuggestions();
-        });
+        // Add some dynamic floating elements
+        setInterval(() => {
+            const floatingElements = document.querySelector('.floating-elements');
+            const icons = ['🍳', '🥘', '🍲', '🔥', '⚡', '🥗', '🍝', '🍜'];
+            const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+            
+            const element = document.createElement('div');
+            element.className = 'floating-icon';
+            element.textContent = randomIcon;
+            element.style.left = Math.random() * 100 + '%';
+            element.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            
+            floatingElements.appendChild(element);
+            
+            setTimeout(() => {
+                element.remove();
+            }, 20000);
+        }, 5000);
     </script>
 </body>
 </html>
